@@ -31,13 +31,16 @@ export default function Scoreboard() {
     const newScores = { ...currentScores };
 
     for (let i = 0; i < 6; i++) {
-      const sum1 =
+      let sum1 =
         (newScores.ones[i] || 0) +
         (newScores.twos[i] || 0) +
         (newScores.threes[i] || 0) +
         (newScores.fours[i] || 0) +
         (newScores.fives[i] || 0) +
         (newScores.sixes[i] || 0);
+      if (sum1 >= 60) {
+        sum1 += 30;
+      }
       newScores.sum1[i] = sum1 > 0 ? sum1 : null;
 
       const maxVal = newScores.max[i] || 0;
@@ -57,7 +60,7 @@ export default function Scoreboard() {
 
   useEffect(() => {
     setScores(calculateSums(scores));
-  }, []);
+  }, [scores]);
 
 
   const handleCellClick = (row: keyof typeof initialScores, index: number) => {
