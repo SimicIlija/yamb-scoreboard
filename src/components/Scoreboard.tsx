@@ -43,7 +43,11 @@ export default function Scoreboard() {
       const maxVal = newScores.max[i] || 0;
       const minVal = newScores.min[i] || 0;
       if (maxVal > 0 && minVal > 0) {
-        newScores.sum2[i] = (maxVal - minVal) * (newScores.ones[i] || 0);
+        let calculatedSum2 = (maxVal - minVal) * (newScores.ones[i] || 0);
+        if (calculatedSum2 >= 60) {
+          calculatedSum2 += 30;
+        }
+        newScores.sum2[i] = calculatedSum2;
       } else {
         newScores.sum2[i] = null;
       }
