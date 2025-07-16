@@ -20,6 +20,7 @@ const initialScores: { [key: string]: (number | null)[] } = {
   full: Array(6).fill(null),
   poker: Array(6).fill(null),
   yamb: Array(6).fill(null),
+  totalSum: Array(6).fill(null),
 };
 
 const headerLabels = ['↓', 'S', '↑', 'N', 'D', '↕'];
@@ -54,13 +55,19 @@ export default function Scoreboard() {
       } else {
         newScores.sum2[i] = null;
       }
+
+      const totalSum =
+        (newScores.sum1[i] || 0) +
+        (newScores.sum2[i] || 0) +
+        (newScores.straight[i] || 0) +
+        (newScores.trilling[i] || 0) +
+        (newScores.full[i] || 0) +
+        (newScores.poker[i] || 0) +
+        (newScores.yamb[i] || 0);
+      newScores.totalSum[i] = totalSum > 0 ? totalSum : null;
     }
     return newScores;
   };
-
-  useEffect(() => {
-    setScores(calculateSums(scores));
-  }, [scores]);
 
 
   const handleCellClick = (row: keyof typeof initialScores, index: number) => {
@@ -68,9 +75,28 @@ export default function Scoreboard() {
     if (value !== null) {
       const intValue = parseInt(value, 10);
       if (!isNaN(intValue)) {
-        const newScores = { ...scores };
-        newScores[row][index] = intValue;
-        setScores(calculateSums(newScores));
+        let minVal = 0;
+        let maxVal = 80;
+        console.log(`Row: ${row}, Value: ${intValue}`);
+
+        if (['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) !== -1) {
+          const rowNumber = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) + 1;
+          minVal = 0;
+          maxVal = 5 * rowNumber;
+        } else if (row === 'max' || row === 'min') {
+          minVal = 5;
+          maxVal = 30;
+        }
+
+        if (intValue >= minVal && intValue <= maxVal) {
+          const newScores = { ...scores };
+          newScores[row][index] = intValue;
+          setScores(calculateSums(newScores));
+        } else {
+          alert(`Please enter a value between ${minVal} and ${maxVal} for ${row}.`);
+        }
+      } else {
+        alert('Please enter a valid number.');
       }
     }
   };
@@ -93,6 +119,7 @@ export default function Scoreboard() {
       <ScoreRow label="Full" values={scores.full} onCellClick={(index) => handleCellClick('full', index)} />
       <ScoreRow label="Poker" values={scores.poker} onCellClick={(index) => handleCellClick('poker', index)} />
       <ScoreRow label="Yamb" values={scores.yamb} onCellClick={(index) => handleCellClick('yamb', index)} />
+      <ScoreRow label="Total Sum" values={scores.totalSum} onCellClick={() => {}} readOnly />
     </div>
   );
 }
