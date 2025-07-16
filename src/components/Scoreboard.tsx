@@ -73,7 +73,7 @@ export default function Scoreboard() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-1">
+    <div className="grid grid-cols-1 gap-1 mx-auto w-fit">
       <HeaderRow labels={headerLabels} />
       <ScoreRow label="1" values={scores.ones} onCellClick={(index) => handleCellClick('ones', index)} />
       <ScoreRow label="2" values={scores.twos} onCellClick={(index) => handleCellClick('twos', index)} />
