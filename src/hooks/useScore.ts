@@ -88,6 +88,10 @@ export default function useScore() {
           
           minVal = 0;
           maxVal = 5 * rowNumber;
+          if( intValue % rowNumber !== 0){
+          alert(`Value for ${row} must be a multiple of ${rowNumber}`);
+          return;
+        }
         } else if (row === 'yamb') {
           if (intValue < 0 || intValue > 80 || (intValue - 50) % 5 !== 0) {
             alert('Invalid value for yamb');
@@ -118,7 +122,7 @@ export default function useScore() {
           maxVal = 30;
         }
 
-        if (intValue >= minVal && intValue <= maxVal && intValue % rowNumber === 0) {
+        if (intValue >= minVal && intValue <= maxVal) {
           const newScores = { ...scores };
           newScores[row][index] = intValue;
           setScores(calculateSums(newScores));
