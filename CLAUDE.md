@@ -69,3 +69,13 @@ The game implements specific Yamb rules:
 - Special combinations have specific valid ranges
 - Straight can only be 0, 46, 56, or 66
 - Automatic sum calculations with bonus rules (30 points for sum ≥ 60)
+
+### Hydration
+- The `<body>` element uses `suppressHydrationWarning={true}` to prevent hydration warnings caused by browser extensions (like Grammarly) that modify DOM attributes after server render but before client hydration
+
+### Data Persistence
+- All game data (scores and stars) is automatically saved to localStorage
+- Data persists across page refreshes and browser sessions
+- SSR-safe implementation: initial render shows default state, localStorage data loads after hydration
+- Storage keys: `yamb-scores` (JSON) and `yamb-stars` (string)
+- Includes error handling for localStorage failures

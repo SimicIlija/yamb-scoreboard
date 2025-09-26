@@ -1,8 +1,30 @@
 import { renderHook, act } from '@testing-library/react';
 import useScore from './useScore';
 
+// Mock localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
 
 describe('useScore', () => {
+  beforeEach(() => {
+    // Clear all localStorage mocks before each test
+    localStorageMock.getItem.mockClear();
+    localStorageMock.setItem.mockClear();
+    localStorageMock.removeItem.mockClear();
+    localStorageMock.clear.mockClear();
+
+    // Setup default mock returns
+    localStorageMock.getItem.mockReturnValue(null);
+  });
+
   it('should initialize with 0 stars and initial scores', () => {
     const { result } = renderHook(() => useScore());
     expect(result.current.stars).toBe(0);
@@ -169,6 +191,69 @@ describe('useScore', () => {
     expect(result.current.scores.totalSum[0]).toBe(null);
     expect(result.current.stars).toBe(0);
     expect(result.current.calculateFinalResult()).toBe(0);
+  });
+
+  it('should save data to localStorage when scores or stars change', async () => {
+    const { result } = renderHook(() => useScore());
+    window.prompt = jest.fn();
+    window.alert = jest.fn();
+
+    // Wait for initial hydration
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+
+    // Add a score
+    window.prompt = jest.fn(() => '5');
+    act(() => {
+      result.current.handleCellClick('ones', 0);
+    });
+
+    // Add a star
+    act(() => {
+      result.current.addStar();
+    });
+
+    // Verify localStorage.setItem was called
+    expect(localStorageMock.setItem).toHaveBeenCalledWith(
+      'yamb-scores',
+      expect.stringContaining('"ones":[5,null,null,null,null,null]')
+    );
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('yamb-stars', '1');
+  });
+
+  it('should load data from localStorage on initialization', () => {
+    // Mock localStorage to return saved data
+    const savedScores = {
+      ones: [3, null, null, null, null, null],
+      twos: [null, null, null, null, null, null],
+      threes: [null, null, null, null, null, null],
+      fours: [null, null, null, null, null, null],
+      fives: [null, null, null, null, null, null],
+      sixes: [null, null, null, null, null, null],
+      sum1: [3, null, null, null, null, null],
+      max: [null, null, null, null, null, null],
+      min: [null, null, null, null, null, null],
+      sum2: [null, null, null, null, null, null],
+      trilling: [null, null, null, null, null, null],
+      straight: [null, null, null, null, null, null],
+      full: [null, null, null, null, null, null],
+      poker: [null, null, null, null, null, null],
+      yamb: [null, null, null, null, null, null],
+      totalSum: [3, null, null, null, null, null]
+    };
+
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'yamb-scores') return JSON.stringify(savedScores);
+      if (key === 'yamb-stars') return '2';
+      return null;
+    });
+
+    const { result } = renderHook(() => useScore());
+
+    // Verify data was loaded
+    expect(result.current.scores.ones[0]).toBe(3);
+    expect(result.current.stars).toBe(2);
   });
 
 });

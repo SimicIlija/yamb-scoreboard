@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export type ScoreRow = 'ones' | 'twos' | 'threes' | 'fours' | 'fives' | 'sixes' | 'sum1' | 'max' | 'min' | 'sum2' | 'trilling' | 'straight' | 'full' | 'poker' | 'yamb' | 'totalSum';
 
@@ -25,9 +25,58 @@ export const initialScores: Scores = {
   totalSum: Array(6).fill(null),
 };
 
+const STORAGE_KEYS = {
+  SCORES: 'yamb-scores',
+  STARS: 'yamb-stars'
+};
+
+const loadFromLocalStorage = () => {
+  if (typeof window === 'undefined') return { scores: initialScores, stars: 0 };
+
+  try {
+    const savedScores = localStorage.getItem(STORAGE_KEYS.SCORES);
+    const savedStars = localStorage.getItem(STORAGE_KEYS.STARS);
+
+    return {
+      scores: savedScores ? JSON.parse(savedScores) : initialScores,
+      stars: savedStars ? parseInt(savedStars, 10) : 0
+    };
+  } catch (error) {
+    console.error('Failed to load from localStorage:', error);
+    return { scores: initialScores, stars: 0 };
+  }
+};
+
+const saveToLocalStorage = (scores: Scores, stars: number) => {
+  if (typeof window === 'undefined') return;
+
+  try {
+    localStorage.setItem(STORAGE_KEYS.SCORES, JSON.stringify(scores));
+    localStorage.setItem(STORAGE_KEYS.STARS, stars.toString());
+  } catch (error) {
+    console.error('Failed to save to localStorage:', error);
+  }
+};
+
 export default function useScore() {
   const [scores, setScores] = useState(initialScores);
   const [stars, setStars] = useState(0);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load data from localStorage after hydration to avoid SSR mismatch
+  useEffect(() => {
+    setIsHydrated(true);
+    const { scores: savedScores, stars: savedStars } = loadFromLocalStorage();
+    setScores(savedScores);
+    setStars(savedStars);
+  }, []);
+
+  // Save to localStorage whenever data changes (but not on initial hydration)
+  useEffect(() => {
+    if (isHydrated) {
+      saveToLocalStorage(scores, stars);
+    }
+  }, [scores, stars, isHydrated]);
 
   const addStar = () => {
     setStars(stars + 1);
