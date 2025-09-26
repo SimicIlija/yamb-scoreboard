@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export type ScoreRow = 'ones' | 'twos' | 'threes' | 'fours' | 'fives' | 'sixes' | 'sum1' | 'max' | 'min' | 'sum2' | 'trilling' | 'straight' | 'full' | 'poker' | 'yamb' | 'totalSum';
+export type ScoreRow = 'ones' | 'twos' | 'threes' | 'fours' | 'fives' | 'sixes' | 'sum1' | 'max' | 'min' | 'sum2' | 'straight' | 'trilling' | 'full' | 'poker' | 'yamb' | 'totalSum';
 
 export type Scores = Record<ScoreRow, (number | null)[]>;
 
@@ -17,8 +17,8 @@ export const initialScores: Scores = {
   max: Array(6).fill(null),
   min: Array(6).fill(null),
   sum2: Array(6).fill(null),
-  trilling: Array(6).fill(null),
   straight: Array(6).fill(null),
+  trilling: Array(6).fill(null),
   full: Array(6).fill(null),
   poker: Array(6).fill(null),
   yamb: Array(6).fill(null),
@@ -26,8 +26,8 @@ export const initialScores: Scores = {
 };
 
 const STORAGE_KEYS = {
-  SCORES: 'yamb-scores',
-  STARS: 'yamb-stars'
+  SCORES: 'yamb-scores-1',
+  STARS: 'yamb-stars-1'
 };
 
 const loadFromLocalStorage = () => {
@@ -206,8 +206,8 @@ export default function useScore() {
       max: Array(6).fill(null),
       min: Array(6).fill(null),
       sum2: Array(6).fill(null),
-      trilling: Array(6).fill(null),
       straight: Array(6).fill(null),
+      trilling: Array(6).fill(null),
       full: Array(6).fill(null),
       poker: Array(6).fill(null),
       yamb: Array(6).fill(null),

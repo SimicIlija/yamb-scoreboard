@@ -13,7 +13,7 @@ import { Scores, ScoreRow } from "@/hooks/useScore";
 
 const headerLabels = ['↓', 'S', '↑', 'N', 'D', '↕'];
 const rowLabels = [
-  '1', '2', '3', '4', '5', '6', 'Sum', 'Max', 'Min', 'Sum', 'Trilling', 'Straight', 'Full', 'Poker', 'Yamb', 'Total Sum'
+  '1', '2', '3', '4', '5', '6', 'S', 'M', 'M', 'S', 'S', 'T', 'F', 'P', 'Y', 'T'
 ];
 
 export default function Scoreboard({ scores, handleCellClick }: { scores: Scores, handleCellClick: (row: ScoreRow, index: number) => void }) {
