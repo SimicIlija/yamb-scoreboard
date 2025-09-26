@@ -5,11 +5,19 @@ import StarCounter from '@/components/StarCounter';
 import useScore from '@/hooks/useScore';
 
 export default function Home() {
-  const { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult } = useScore();
+  const { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult, resetAll } = useScore();
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold text-center my-4">Yamb Scoreboard</h1>
+      <div className="flex items-center gap-4 my-4">
+        <h1 className="text-3xl font-bold text-center">Yamb Scoreboard</h1>
+        <button
+          onClick={resetAll}
+          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded font-medium"
+        >
+          Reset
+        </button>
+      </div>
       <StarCounter stars={stars} addStar={addStar} removeStar={removeStar} />
       <Scoreboard scores={scores} handleCellClick={handleCellClick} />
       <div className="mt-6 p-4 bg-blue-100 rounded-lg">

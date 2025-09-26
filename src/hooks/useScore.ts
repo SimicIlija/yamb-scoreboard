@@ -145,5 +145,28 @@ export default function useScore() {
     return sumOfTotalSums + (stars * 20);
   };
 
-  return { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult };
+  const resetAll = () => {
+    const freshScores: Scores = {
+      ones: Array(6).fill(null),
+      twos: Array(6).fill(null),
+      threes: Array(6).fill(null),
+      fours: Array(6).fill(null),
+      fives: Array(6).fill(null),
+      sixes: Array(6).fill(null),
+      sum1: Array(6).fill(null),
+      max: Array(6).fill(null),
+      min: Array(6).fill(null),
+      sum2: Array(6).fill(null),
+      trilling: Array(6).fill(null),
+      straight: Array(6).fill(null),
+      full: Array(6).fill(null),
+      poker: Array(6).fill(null),
+      yamb: Array(6).fill(null),
+      totalSum: Array(6).fill(null),
+    };
+    setScores(freshScores);
+    setStars(0);
+  };
+
+  return { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult, resetAll };
 }

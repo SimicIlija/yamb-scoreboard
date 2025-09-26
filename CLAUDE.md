@@ -8,11 +8,13 @@ This is a Next.js 15 application for a Yamb (dice game) scoreboard. The applicat
 
 ## Development Commands
 
-- `npm run dev` - Start development server at http://localhost:3000
-- `npm run build` - Build for production
+- `npm run dev` - Start development server at http://localhost:3000 (DO NOT RUN THIS)
+- `npm run build` - Build for production (DO NOT RUN THIS)
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run test` - Run Jest tests in watch mode
+
+**IMPORTANT**: Never run `npm run build` or `npm run dev` commands in this project.
 
 ## Testing
 

@@ -137,4 +137,38 @@ describe('useScore', () => {
     expect(result.current.scores.yamb[0]).toBe(50);
   });
 
+  it('should reset all scores and stars to initial state', () => {
+    const { result } = renderHook(() => useScore());
+    window.prompt = jest.fn();
+    window.alert = jest.fn();
+
+    // Add some scores and stars
+    window.prompt = jest.fn(() => '5');
+    act(() => {
+      result.current.handleCellClick('ones', 0);
+    });
+
+    act(() => {
+      result.current.addStar();
+    });
+    act(() => {
+      result.current.addStar();
+    });
+
+    // Verify data was added
+    expect(result.current.scores.ones[0]).toBe(5);
+    expect(result.current.stars).toBe(2);
+
+    // Reset everything
+    act(() => {
+      result.current.resetAll();
+    });
+
+    // Verify everything is back to initial state
+    expect(result.current.scores.ones[0]).toBe(null);
+    expect(result.current.scores.totalSum[0]).toBe(null);
+    expect(result.current.stars).toBe(0);
+    expect(result.current.calculateFinalResult()).toBe(0);
+  });
+
 });
