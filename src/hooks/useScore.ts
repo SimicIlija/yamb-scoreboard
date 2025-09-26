@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-const initialScores: { [key: string]: (number | null)[] } = {
+export const initialScores: { [key: string]: (number | null)[] } = {
   ones: Array(6).fill(null),
   twos: Array(6).fill(null),
   threes: Array(6).fill(null),

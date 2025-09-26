@@ -9,12 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { initialScores } from "@/hooks/useScore";
+
 const headerLabels = ['↓', 'S', '↑', 'N', 'D', '↕'];
 const rowLabels = [
   '1', '2', '3', '4', '5', '6', 'Sum', 'Max', 'Min', 'Sum', 'Trilling', 'Straight', 'Full', 'Poker', 'Yamb', 'Total Sum'
 ];
 
-export default function Scoreboard({ scores, handleCellClick }: { scores: { [key: string]: (number | null)[] }, handleCellClick: (row: string, index: number) => void }) {
+export default function Scoreboard({ scores, handleCellClick }: { scores: typeof initialScores, handleCellClick: (row: keyof typeof initialScores, index: number) => void }) {
   return (
     <div className="overflow-x-auto">
       <Table className="max-w-full">
