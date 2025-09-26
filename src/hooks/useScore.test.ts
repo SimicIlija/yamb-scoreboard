@@ -136,4 +136,5 @@ describe('useScore', () => {
     });
     expect(result.current.scores.yamb[0]).toBe(50);
   });
+
 });

@@ -139,5 +139,11 @@ export default function useScore() {
     }
   };
 
-  return { scores, stars, addStar, removeStar, handleCellClick };
+  const calculateFinalResult = () => {
+    const totalSumRow = scores.totalSum;
+    const sumOfTotalSums = totalSumRow.reduce((sum: number, value) => sum + (value || 0), 0);
+    return sumOfTotalSums + (stars * 20);
+  };
+
+  return { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult };
 }
