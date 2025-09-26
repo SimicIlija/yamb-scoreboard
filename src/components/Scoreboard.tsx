@@ -77,10 +77,9 @@ export default function Scoreboard() {
       if (!isNaN(intValue)) {
         let minVal = 0;
         let maxVal = 80;
-        console.log(`Row: ${row}, Value: ${intValue}`);
-
+        const rowNumber = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) + 1;
         if (['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) !== -1) {
-          const rowNumber = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) + 1;
+          
           minVal = 0;
           maxVal = 5 * rowNumber;
         } else if (row === 'max' || row === 'min') {
@@ -88,12 +87,12 @@ export default function Scoreboard() {
           maxVal = 30;
         }
 
-        if (intValue >= minVal && intValue <= maxVal) {
+        if (intValue >= minVal && intValue <= maxVal && intValue % rowNumber === 0) {
           const newScores = { ...scores };
           newScores[row][index] = intValue;
           setScores(calculateSums(newScores));
         } else {
-          alert(`Please enter a value between ${minVal} and ${maxVal} for ${row}.`);
+          alert(`Please enter a valid value between ${minVal} and ${maxVal} for ${row}.`);
         }
       } else {
         alert('Please enter a valid number.');
