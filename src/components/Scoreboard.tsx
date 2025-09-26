@@ -1,8 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import ScoreRow from './ScoreRow';
-import HeaderRow from './HeaderRow';
+import { useState } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const initialScores: { [key: string]: (number | null)[] } = {
   ones: Array(6).fill(null),
@@ -24,6 +31,9 @@ const initialScores: { [key: string]: (number | null)[] } = {
 };
 
 const headerLabels = ['↓', 'S', '↑', 'N', 'D', '↕'];
+const rowLabels = [
+  '1', '2', '3', '4', '5', '6', 'Sum', 'Max', 'Min', 'Sum', 'Straight', 'Trilling', 'Full', 'Poker', 'Yamb', 'Total Sum'
+];
 
 export default function Scoreboard() {
   const [scores, setScores] = useState(initialScores);
@@ -69,7 +79,6 @@ export default function Scoreboard() {
     return newScores;
   };
 
-
   const handleCellClick = (row: keyof typeof initialScores, index: number) => {
     const value = prompt(`Enter score for ${row}`);
     if (value !== null) {
@@ -87,7 +96,7 @@ export default function Scoreboard() {
           maxVal = 30;
         }
 
-        if (intValue >= minVal && intValue <= maxVal && intValue % rowNumber === 0) {
+        if (intValue >= minVal && intValue <= maxVal) {
           const newScores = { ...scores };
           newScores[row][index] = intValue;
           setScores(calculateSums(newScores));
@@ -101,24 +110,34 @@ export default function Scoreboard() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-1 mx-auto w-fit">
-      <HeaderRow labels={headerLabels} />
-      <ScoreRow label="1" values={scores.ones} onCellClick={(index) => handleCellClick('ones', index)} />
-      <ScoreRow label="2" values={scores.twos} onCellClick={(index) => handleCellClick('twos', index)} />
-      <ScoreRow label="3" values={scores.threes} onCellClick={(index) => handleCellClick('threes', index)} />
-      <ScoreRow label="4" values={scores.fours} onCellClick={(index) => handleCellClick('fours', index)} />
-      <ScoreRow label="5" values={scores.fives} onCellClick={(index) => handleCellClick('fives', index)} />
-      <ScoreRow label="6" values={scores.sixes} onCellClick={(index) => handleCellClick('sixes', index)} />
-      <ScoreRow label="Sum" values={scores.sum1} onCellClick={() => {}} readOnly />
-      <ScoreRow label="Max" values={scores.max} onCellClick={(index) => handleCellClick('max', index)} />
-      <ScoreRow label="Min" values={scores.min} onCellClick={(index) => handleCellClick('min', index)} />
-      <ScoreRow label="Sum" values={scores.sum2} onCellClick={() => {}} readOnly />
-      <ScoreRow label="Straight" values={scores.straight} onCellClick={(index) => handleCellClick('straight', index)} />
-      <ScoreRow label="Trilling" values={scores.trilling} onCellClick={(index) => handleCellClick('trilling', index)} />
-      <ScoreRow label="Full" values={scores.full} onCellClick={(index) => handleCellClick('full', index)} />
-      <ScoreRow label="Poker" values={scores.poker} onCellClick={(index) => handleCellClick('poker', index)} />
-      <ScoreRow label="Yamb" values={scores.yamb} onCellClick={(index) => handleCellClick('yamb', index)} />
-      <ScoreRow label="Total Sum" values={scores.totalSum} onCellClick={() => {}} readOnly />
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-20"></TableHead>
+          {headerLabels.map((label, index) => (
+            <TableHead key={index} className="text-center">{label}</TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {Object.keys(scores).map((key, rowIndex) => (
+          <TableRow key={key}>
+            <TableCell className="font-medium text-left border">{rowLabels[rowIndex]}</TableCell>
+            {scores[key].map((score, cellIndex) => {
+              const isSumRow = key.toLowerCase().includes('sum');
+              return (
+                <TableCell
+                  key={cellIndex}
+                  className={`text-center border ${isSumRow ? 'bg-white text-black' : ''}`}
+                  onClick={() => !isSumRow && handleCellClick(key as keyof typeof initialScores, cellIndex)}
+                >
+                  {score}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
