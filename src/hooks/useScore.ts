@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
-export const initialScores: { [key: string]: (number | null)[] } = {
+export type ScoreRow = 'ones' | 'twos' | 'threes' | 'fours' | 'fives' | 'sixes' | 'sum1' | 'max' | 'min' | 'sum2' | 'trilling' | 'straight' | 'full' | 'poker' | 'yamb' | 'totalSum';
+
+export type Scores = Record<ScoreRow, (number | null)[]>;
+
+export const initialScores: Scores = {
   ones: Array(6).fill(null),
   twos: Array(6).fill(null),
   threes: Array(6).fill(null),
@@ -35,7 +39,7 @@ export default function useScore() {
     }
   };
 
-  const calculateSums = (currentScores: typeof initialScores) => {
+  const calculateSums = (currentScores: Scores) => {
     const newScores = { ...currentScores };
 
     for (let i = 0; i < 6; i++) {
@@ -76,7 +80,7 @@ export default function useScore() {
     return newScores;
   };
 
-  const handleCellClick = (row: keyof typeof initialScores, index: number) => {
+  const handleCellClick = (row: ScoreRow, index: number) => {
     const value = prompt(`Enter score for ${row}`);
     if (value !== null) {
       const intValue = parseInt(value, 10);
