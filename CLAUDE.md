@@ -79,3 +79,10 @@ The game implements specific Yamb rules:
 - SSR-safe implementation: initial render shows default state, localStorage data loads after hydration
 - Storage keys: `yamb-scores` (JSON) and `yamb-stars` (string)
 - Includes error handling for localStorage failures
+
+### Mobile Features
+- **Screen Wake Lock**: Prevents mobile device screens from turning off during gameplay
+- Automatically requests wake lock when app loads
+- Re-acquires wake lock when returning to the app (visibility change)
+- Properly releases wake lock on app close/unmount
+- Includes fallback for browsers that don't support Wake Lock API

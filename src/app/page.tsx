@@ -1,11 +1,46 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Scoreboard from '@/components/Scoreboard';
 import StarCounter from '@/components/StarCounter';
 import useScore from '@/hooks/useScore';
 
 export default function Home() {
   const { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult, resetAll } = useScore();
+  const wakeLockRef = useRef<WakeLockSentinel | null>(null);
+
+  // Request wake lock to prevent screen from turning off
+  useEffect(() => {
+    const requestWakeLock = async () => {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLockRef.current = await navigator.wakeLock.request('screen');
+          console.log('Wake lock acquired');
+        }
+      } catch (error) {
+        console.error('Failed to acquire wake lock:', error);
+      }
+    };
+
+    // Release wake lock when page becomes hidden
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && wakeLockRef.current?.released) {
+        requestWakeLock();
+      }
+    };
+
+    requestWakeLock();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      // Cleanup
+      if (wakeLockRef.current && !wakeLockRef.current.released) {
+        wakeLockRef.current.release();
+        console.log('Wake lock released');
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen">
