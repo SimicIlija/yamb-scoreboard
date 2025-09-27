@@ -216,10 +216,10 @@ describe('useScore', () => {
 
     // Verify localStorage.setItem was called
     expect(localStorageMock.setItem).toHaveBeenCalledWith(
-      'yamb-scores',
+      'yamb-scores-1',
       expect.stringContaining('"ones":[5,null,null,null,null,null]')
     );
-    expect(localStorageMock.setItem).toHaveBeenCalledWith('yamb-stars', '1');
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('yamb-stars-1', '1');
   });
 
   it('should load data from localStorage on initialization', () => {

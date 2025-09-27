@@ -1,8 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export type ScoreRow = 'ones' | 'twos' | 'threes' | 'fours' | 'fives' | 'sixes' | 'sum1' | 'max' | 'min' | 'sum2' | 'straight' | 'trilling' | 'full' | 'poker' | 'yamb' | 'totalSum';
+export type ScoreRow =
+  | "ones"
+  | "twos"
+  | "threes"
+  | "fours"
+  | "fives"
+  | "sixes"
+  | "sum1"
+  | "max"
+  | "min"
+  | "sum2"
+  | "straight"
+  | "trilling"
+  | "full"
+  | "poker"
+  | "yamb"
+  | "totalSum";
 
 export type Scores = Record<ScoreRow, (number | null)[]>;
 
@@ -26,12 +42,12 @@ export const initialScores: Scores = {
 };
 
 const STORAGE_KEYS = {
-  SCORES: 'yamb-scores-1',
-  STARS: 'yamb-stars-1'
+  SCORES: "yamb-scores-1",
+  STARS: "yamb-stars-1",
 };
 
 const loadFromLocalStorage = () => {
-  if (typeof window === 'undefined') return { scores: initialScores, stars: 0 };
+  if (typeof window === "undefined") return { scores: initialScores, stars: 0 };
 
   try {
     const savedScores = localStorage.getItem(STORAGE_KEYS.SCORES);
@@ -39,22 +55,22 @@ const loadFromLocalStorage = () => {
 
     return {
       scores: savedScores ? JSON.parse(savedScores) : initialScores,
-      stars: savedStars ? parseInt(savedStars, 10) : 0
+      stars: savedStars ? parseInt(savedStars, 10) : 0,
     };
   } catch (error) {
-    console.error('Failed to load from localStorage:', error);
+    console.error("Failed to load from localStorage:", error);
     return { scores: initialScores, stars: 0 };
   }
 };
 
 const saveToLocalStorage = (scores: Scores, stars: number) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   try {
     localStorage.setItem(STORAGE_KEYS.SCORES, JSON.stringify(scores));
     localStorage.setItem(STORAGE_KEYS.STARS, stars.toString());
   } catch (error) {
-    console.error('Failed to save to localStorage:', error);
+    console.error("Failed to save to localStorage:", error);
   }
 };
 
@@ -136,41 +152,51 @@ export default function useScore() {
       if (!isNaN(intValue)) {
         let minVal = 0;
         let maxVal = 80;
-        const rowNumber = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) + 1;
-        if (['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].indexOf(row as string) !== -1) {
-          
+        const rowNumber =
+          ["ones", "twos", "threes", "fours", "fives", "sixes"].indexOf(
+            row as string
+          ) + 1;
+        if (
+          ["ones", "twos", "threes", "fours", "fives", "sixes"].indexOf(
+            row as string
+          ) !== -1
+        ) {
           minVal = 0;
           maxVal = 5 * rowNumber;
-          if( intValue % rowNumber !== 0){
-          alert(`Value for ${row} must be a multiple of ${rowNumber}`);
-          return;
-        }
-        } else if (row === 'yamb') {
+          if (intValue % rowNumber !== 0) {
+            alert(`Value for ${row} must be a multiple of ${rowNumber}`);
+            return;
+          }
+        } else if (row === "yamb") {
           if (intValue < 0 || intValue > 80 || (intValue - 50) % 5 !== 0) {
-            alert('Invalid value for yamb');
+            alert("Invalid value for yamb");
             return;
           }
-        } else if (row === 'poker') {
+        } else if (row === "poker") {
           if (intValue < 0 || intValue > 64 || (intValue - 40) % 4 !== 0) {
-            alert('Invalid value for poker');
+            alert("Invalid value for poker");
             return;
           }
-        } else if (row === 'full') {
+        } else if (row === "full") {
           if (intValue < 0 || intValue > 60) {
-            alert('Value for full must be between 0 and 60');
+            alert("Value for full must be between 0 and 60");
             return;
           }
-        } else if (row === 'trilling') {
-          if (intValue < 0 || intValue > 38 || (intValue - 20) % 3 !== 0) {
-            alert('Invalid value for trilling');
+        } else if (row === "trilling") {
+          if (
+            intValue < 0 ||
+            intValue > 38 ||
+            (intValue !== 0 && (intValue - 20) % 3 !== 0)
+          ) {
+            alert("Invalid value for trilling");
             return;
           }
-        } else if (row === 'straight') {
+        } else if (row === "straight") {
           if (![0, 46, 56, 66].includes(intValue)) {
-            alert('Value for straight must be 0, 46, 56 or 66');
+            alert("Value for straight must be 0, 46, 56 or 66");
             return;
           }
-        } else if (row === 'max' || row === 'min') {
+        } else if (row === "max" || row === "min") {
           minVal = 5;
           maxVal = 30;
         }
@@ -180,18 +206,23 @@ export default function useScore() {
           newScores[row][index] = intValue;
           setScores(calculateSums(newScores));
         } else {
-          alert(`Please enter a valid value between ${minVal} and ${maxVal} for ${row}.`);
+          alert(
+            `Please enter a valid value between ${minVal} and ${maxVal} for ${row}.`
+          );
         }
       } else {
-        alert('Please enter a valid number.');
+        alert("Please enter a valid number.");
       }
     }
   };
 
   const calculateFinalResult = () => {
     const totalSumRow = scores.totalSum;
-    const sumOfTotalSums = totalSumRow.reduce((sum: number, value) => sum + (value || 0), 0);
-    return sumOfTotalSums + (stars * 20);
+    const sumOfTotalSums = totalSumRow.reduce(
+      (sum: number, value) => sum + (value || 0),
+      0
+    );
+    return sumOfTotalSums + stars * 20;
   };
 
   const resetAll = () => {
@@ -217,5 +248,13 @@ export default function useScore() {
     setStars(0);
   };
 
-  return { scores, stars, addStar, removeStar, handleCellClick, calculateFinalResult, resetAll };
+  return {
+    scores,
+    stars,
+    addStar,
+    removeStar,
+    handleCellClick,
+    calculateFinalResult,
+    resetAll,
+  };
 }
