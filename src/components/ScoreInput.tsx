@@ -9,7 +9,9 @@ interface ScoreInputProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (value: number) => void;
+  onDelete: () => void;
   rowLabel: string;
+  currentValue: number | null;
   children: React.ReactNode;
 }
 
@@ -17,7 +19,9 @@ export default function ScoreInput({
   isOpen,
   onOpenChange,
   onSubmit,
+  onDelete,
   rowLabel,
+  currentValue,
   children,
 }: ScoreInputProps) {
   const [inputValue, setInputValue] = useState("");
@@ -69,21 +73,36 @@ export default function ScoreInput({
               className="w-full"
             />
           </div>
-          <div className="flex gap-2 justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onOpenChange(false);
-                setInputValue("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" size="sm">
-              Submit
-            </Button>
+          <div className="flex gap-2 justify-between">
+            {currentValue !== null && (
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={() => {
+                  onDelete();
+                  setInputValue("");
+                }}
+              >
+                Delete
+              </Button>
+            )}
+            <div className="flex gap-2 ml-auto">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  onOpenChange(false);
+                  setInputValue("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm">
+                Submit
+              </Button>
+            </div>
           </div>
         </form>
       </PopoverContent>

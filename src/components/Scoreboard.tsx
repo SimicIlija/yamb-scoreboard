@@ -21,6 +21,7 @@ interface ScoreboardProps {
   scores: Scores;
   handleCellClick: (row: ScoreRow, index: number) => void;
   handleScoreSubmit: (value: number) => void;
+  handleScoreDelete: () => void;
   activeCell: { row: ScoreRow; index: number } | null;
   setActiveCell: (cell: { row: ScoreRow; index: number } | null) => void;
 }
@@ -29,6 +30,7 @@ export default function Scoreboard({
   scores,
   handleCellClick,
   handleScoreSubmit,
+  handleScoreDelete,
   activeCell,
   setActiveCell
 }: ScoreboardProps) {
@@ -71,7 +73,9 @@ export default function Scoreboard({
                       if (!open) setActiveCell(null);
                     }}
                     onSubmit={handleScoreSubmit}
+                    onDelete={handleScoreDelete}
                     rowLabel={rowLabels[rowIndex]}
+                    currentValue={score}
                   >
                     <TableCell
                       className="text-center border cursor-pointer hover:bg-gray-100"

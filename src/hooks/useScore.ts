@@ -220,6 +220,16 @@ export default function useScore() {
     }
   };
 
+  const handleScoreDelete = () => {
+    if (!activeCell) return;
+
+    const { row, index } = activeCell;
+    const newScores = { ...scores };
+    newScores[row][index] = null;
+    setScores(calculateSums(newScores));
+    setActiveCell(null);
+  };
+
   const calculateFinalResult = () => {
     const totalSumRow = scores.totalSum;
     const sumOfTotalSums = totalSumRow.reduce(
@@ -259,6 +269,7 @@ export default function useScore() {
     removeStar,
     handleCellClick,
     handleScoreSubmit,
+    handleScoreDelete,
     activeCell,
     setActiveCell,
     calculateFinalResult,
