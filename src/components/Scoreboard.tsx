@@ -73,6 +73,7 @@ export default function Scoreboard({
                     onSubmit={handleScoreSubmit}
                     onDelete={handleScoreDelete}
                     rowLabel={rowLabels[rowIndex]}
+                    columnLabel={headerLabels[cellIndex]}
                     currentValue={score}
                   >
                     <TableCell

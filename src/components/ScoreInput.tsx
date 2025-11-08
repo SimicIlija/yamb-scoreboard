@@ -11,6 +11,7 @@ interface ScoreInputProps {
   onSubmit: (value: number) => void;
   onDelete: () => void;
   rowLabel: string;
+  columnLabel: string;
   currentValue: number | null;
   children: React.ReactNode;
 }
@@ -21,6 +22,7 @@ export default function ScoreInput({
   onSubmit,
   onDelete,
   rowLabel,
+  columnLabel,
   currentValue,
   children,
 }: ScoreInputProps) {
@@ -62,7 +64,7 @@ export default function ScoreInput({
       <PopoverContent className="w-64">
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="space-y-2">
-            <h4 className="font-medium text-sm">Enter score for {rowLabel}</h4>
+            <h4 className="font-medium text-sm">Enter score for {rowLabel} ({columnLabel})</h4>
             <Input
               ref={inputRef}
               type="number"
