@@ -150,70 +150,13 @@ export default function useScore() {
     if (!activeCell) return;
 
     const { row, index } = activeCell;
-    const intValue = value;
 
-    let minVal = 0;
-    let maxVal = 80;
-    const rowNumber =
-      ["ones", "twos", "threes", "fours", "fives", "sixes"].indexOf(
-        row as string
-      ) + 1;
-
-    if (
-      ["ones", "twos", "threes", "fours", "fives", "sixes"].indexOf(
-        row as string
-      ) !== -1
-    ) {
-      minVal = 0;
-      maxVal = 5 * rowNumber;
-      if (intValue % rowNumber !== 0) {
-        alert(`Value for ${row} must be a multiple of ${rowNumber}`);
-        return;
-      }
-    } else if (row === "yamb") {
-      if (intValue < 0 || intValue > 80 || (intValue - 50) % 5 !== 0) {
-        alert("Invalid value for yamb");
-        return;
-      }
-    } else if (row === "poker") {
-      if (intValue < 0 || intValue > 64 || (intValue - 40) % 4 !== 0) {
-        alert("Invalid value for poker");
-        return;
-      }
-    } else if (row === "full") {
-      if (intValue < 0 || intValue > 60) {
-        alert("Value for full must be between 0 and 60");
-        return;
-      }
-    } else if (row === "trilling") {
-      if (
-        intValue < 0 ||
-        intValue > 38 ||
-        (intValue !== 0 && (intValue - 20) % 3 !== 0)
-      ) {
-        alert("Invalid value for trilling");
-        return;
-      }
-    } else if (row === "straight") {
-      if (![0, 46, 56, 66].includes(intValue)) {
-        alert("Value for straight must be 0, 46, 56 or 66");
-        return;
-      }
-    } else if (row === "max" || row === "min") {
-      minVal = 5;
-      maxVal = 30;
-    }
-
-    if (intValue >= minVal && intValue <= maxVal) {
-      const newScores = { ...scores };
-      newScores[row][index] = intValue;
-      setScores(calculateSums(newScores));
-      setActiveCell(null);
-    } else {
-      alert(
-        `Please enter a valid value between ${minVal} and ${maxVal} for ${row}.`
-      );
-    }
+    // Validation is now handled in ScoreInput component
+    // This function only updates the score if called
+    const newScores = { ...scores };
+    newScores[row][index] = value;
+    setScores(calculateSums(newScores));
+    setActiveCell(null);
   };
 
   const handleScoreDelete = () => {

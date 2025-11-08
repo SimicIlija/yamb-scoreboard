@@ -75,6 +75,7 @@ export default function Scoreboard({
                     rowLabel={rowLabels[rowIndex]}
                     columnLabel={headerLabels[cellIndex]}
                     currentValue={score}
+                    rowType={rowKey}
                   >
                     <TableCell
                       className="text-center border cursor-pointer hover:bg-gray-100"

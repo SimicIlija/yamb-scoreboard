@@ -76,134 +76,84 @@ describe('useScore', () => {
     expect(result.current.activeCell).toBe(null); // Should close after submit
   });
 
-  it('should validate straight row input', () => {
+  it('should accept score input for straight row (validation moved to component)', () => {
     const { result } = renderHook(() => useScore());
-    window.alert = jest.fn();
 
     // Set active cell
     act(() => {
       result.current.setActiveCell({ row: 'straight', index: 0 });
     });
 
-    // Try invalid value
-    act(() => {
-      result.current.handleScoreSubmit(45);
-    });
-    expect(window.alert).toHaveBeenCalledWith('Value for straight must be 0, 46, 56 or 66');
-    expect(result.current.scores.straight[0]).toBe(null);
-
-    // Try valid value
-    act(() => {
-      result.current.setActiveCell({ row: 'straight', index: 0 });
-    });
+    // Submit valid value (validation now happens in ScoreInput component)
     act(() => {
       result.current.handleScoreSubmit(46);
     });
     expect(result.current.scores.straight[0]).toBe(46);
+    expect(result.current.activeCell).toBe(null);
   });
 
-  it('should validate trilling row input', () => {
+  it('should accept score input for trilling row (validation moved to component)', () => {
     const { result } = renderHook(() => useScore());
-    window.alert = jest.fn();
 
     // Set active cell
     act(() => {
       result.current.setActiveCell({ row: 'trilling', index: 0 });
     });
 
-    // Try invalid value
-    act(() => {
-      result.current.handleScoreSubmit(19);
-    });
-    expect(window.alert).toHaveBeenCalledWith('Invalid value for trilling');
-    expect(result.current.scores.trilling[0]).toBe(null);
-
-    // Try valid value
-    act(() => {
-      result.current.setActiveCell({ row: 'trilling', index: 0 });
-    });
+    // Submit valid value (validation now happens in ScoreInput component)
     act(() => {
       result.current.handleScoreSubmit(20);
     });
     expect(result.current.scores.trilling[0]).toBe(20);
+    expect(result.current.activeCell).toBe(null);
   });
 
-  it('should validate full row input', () => {
+  it('should accept score input for full row (validation moved to component)', () => {
     const { result } = renderHook(() => useScore());
-    window.alert = jest.fn();
 
     // Set active cell
     act(() => {
       result.current.setActiveCell({ row: 'full', index: 0 });
     });
 
-    // Try invalid value
-    act(() => {
-      result.current.handleScoreSubmit(61);
-    });
-    expect(window.alert).toHaveBeenCalledWith('Value for full must be between 0 and 60');
-    expect(result.current.scores.full[0]).toBe(null);
-
-    // Try valid value
-    act(() => {
-      result.current.setActiveCell({ row: 'full', index: 0 });
-    });
+    // Submit valid value (validation now happens in ScoreInput component)
     act(() => {
       result.current.handleScoreSubmit(60);
     });
     expect(result.current.scores.full[0]).toBe(60);
+    expect(result.current.activeCell).toBe(null);
   });
 
-  it('should validate poker row input', () => {
+  it('should accept score input for poker row (validation moved to component)', () => {
     const { result } = renderHook(() => useScore());
-    window.alert = jest.fn();
 
     // Set active cell
     act(() => {
       result.current.setActiveCell({ row: 'poker', index: 0 });
     });
 
-    // Try invalid value
-    act(() => {
-      result.current.handleScoreSubmit(39);
-    });
-    expect(window.alert).toHaveBeenCalledWith('Invalid value for poker');
-    expect(result.current.scores.poker[0]).toBe(null);
-
-    // Try valid value
-    act(() => {
-      result.current.setActiveCell({ row: 'poker', index: 0 });
-    });
+    // Submit valid value (validation now happens in ScoreInput component)
     act(() => {
       result.current.handleScoreSubmit(40);
     });
     expect(result.current.scores.poker[0]).toBe(40);
+    expect(result.current.activeCell).toBe(null);
   });
 
-  it('should validate yamb row input', () => {
+  it('should accept score input for yamb row (validation moved to component)', () => {
     const { result } = renderHook(() => useScore());
-    window.alert = jest.fn();
 
     // Set active cell
     act(() => {
       result.current.setActiveCell({ row: 'yamb', index: 0 });
     });
 
-    // Try invalid value
-    act(() => {
-      result.current.handleScoreSubmit(49);
-    });
-    expect(window.alert).toHaveBeenCalledWith('Invalid value for yamb');
-    expect(result.current.scores.yamb[0]).toBe(null);
-
-    // Try valid value
-    act(() => {
-      result.current.setActiveCell({ row: 'yamb', index: 0 });
-    });
+    // Submit valid value (validation now happens in ScoreInput component)
     act(() => {
       result.current.handleScoreSubmit(50);
     });
     expect(result.current.scores.yamb[0]).toBe(50);
+    expect(result.current.activeCell).toBe(null);
   });
 
   it('should reset all scores and stars to initial state', () => {
