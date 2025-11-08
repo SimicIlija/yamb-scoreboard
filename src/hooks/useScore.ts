@@ -146,10 +146,6 @@ export default function useScore() {
     return newScores;
   };
 
-  const handleCellClick = (row: ScoreRow, index: number) => {
-    setActiveCell({ row, index });
-  };
-
   const handleScoreSubmit = (value: number) => {
     if (!activeCell) return;
 
@@ -267,7 +263,6 @@ export default function useScore() {
     stars,
     addStar,
     removeStar,
-    handleCellClick,
     handleScoreSubmit,
     handleScoreDelete,
     activeCell,

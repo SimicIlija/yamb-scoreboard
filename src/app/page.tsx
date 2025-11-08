@@ -6,7 +6,7 @@ import StarCounter from '@/components/StarCounter';
 import useScore from '@/hooks/useScore';
 
 export default function Home() {
-  const { scores, stars, addStar, removeStar, handleCellClick, handleScoreSubmit, handleScoreDelete, activeCell, setActiveCell, calculateFinalResult, resetAll } = useScore();
+  const { scores, stars, addStar, removeStar, handleScoreSubmit, handleScoreDelete, activeCell, setActiveCell, calculateFinalResult, resetAll } = useScore();
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
   // Request wake lock to prevent screen from turning off
@@ -56,7 +56,6 @@ export default function Home() {
       <StarCounter stars={stars} addStar={addStar} removeStar={removeStar} />
       <Scoreboard
         scores={scores}
-        handleCellClick={handleCellClick}
         handleScoreSubmit={handleScoreSubmit}
         handleScoreDelete={handleScoreDelete}
         activeCell={activeCell}
