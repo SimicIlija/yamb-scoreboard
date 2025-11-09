@@ -62,5 +62,5 @@ jobs:
             Auto-deployed from yamb-scoreboard repository
             Commit: ${{ github.sha }}
             "
-            git push origin main
+            git push origin master
           fi
