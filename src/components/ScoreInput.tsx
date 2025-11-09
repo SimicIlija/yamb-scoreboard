@@ -76,12 +76,12 @@ const validateInput = (value: number, rowType: string): string | null => {
       }
       break;
     case "poker":
-      if (value < 0 || value > 64 || (value - 40) % 4 !== 0) {
+      if (value < 0 || value > 64 || (value !== 0 && (value - 40) % 4 !== 0)) {
         return "Invalid value for poker";
       }
       break;
     case "yamb":
-      if (value < 0 || value > 80 || (value - 50) % 5 !== 0) {
+      if (value < 0 || value > 80 || (value !== 0 && (value - 50) % 5 !== 0)) {
         return "Invalid value for yamb";
       }
       break;
