@@ -36,7 +36,7 @@ jobs:
       - name: Pull latest changes from github.io repo
         run: |
           cd github-pages-repo
-          git pull origin main || (echo "::error::Failed to pull latest changes" && exit 1)
+          git pull origin master || (echo "::error::Failed to pull latest changes" && exit 1)
 
       - name: Clear and copy build output to jamb folder
         run: |
