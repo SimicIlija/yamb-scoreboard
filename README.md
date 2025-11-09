@@ -1,3 +1,7 @@
+# Yamb Scoreboard
+
+![Deploy Status](https://github.com/SimicIlija/yamb-scoreboard/actions/workflows/deploy.yml/badge.svg)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -29,8 +33,32 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is automatically deployed to GitHub Pages via GitHub Actions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Production URL
+
+The app is deployed at: **https://SimicIlija.github.io/jamb**
+
+### Automatic Deployment Process
+
+When code is merged to the `main` branch:
+1. GitHub Actions triggers the build workflow
+2. Dependencies are installed and the app is built using `npm run build`
+3. The build output is deployed to the `jamb` folder in the [SimicIlija.github.io](https://github.com/SimicIlija/SimicIlija.github.io) repository
+4. Changes are automatically committed and pushed
+
+### Required Setup
+
+To enable automatic deployment, you need to configure a Personal Access Token (PAT):
+
+1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Generate a new token with `repo` scope (full control of private repositories)
+3. Copy the token
+4. In this repository, go to Settings → Secrets and variables → Actions
+5. Create a new repository secret named `GH_PAT` and paste the token
+
+### Manual Deployment
+
+To manually trigger a deployment, push to the `main` branch or re-run the GitHub Actions workflow from the Actions tab.
