@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout yamb-scoreboard repository
@@ -16,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.14'
+          node-version: '22.x'
           cache: 'npm'
 
       - name: Install dependencies
@@ -30,12 +32,13 @@ jobs:
         with:
           repository: SimicIlija/SimicIlija.github.io
           path: github-pages-repo
+          # Requires GH_PAT with 'repo' scope to push to SimicIlija.github.io
           token: ${{ secrets.GH_PAT }}
 
       - name: Pull latest changes from github.io repo
         run: |
           cd github-pages-repo
-          git pull origin main
+          git pull origin main || (echo "::error::Failed to pull latest changes" && exit 1)
 
       - name: Clear and copy build output to jamb folder
         run: |
