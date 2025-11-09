@@ -49,8 +49,8 @@ jobs:
       - name: Configure git
         run: |
           cd github-pages-repo
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
+          git config user.name "${{ secrets.NAME }}"
+          git config user.email "${{ secrets.EMAIL }}"
 
       - name: Commit and push changes
         run: |
