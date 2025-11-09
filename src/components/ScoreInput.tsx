@@ -149,6 +149,7 @@ export default function ScoreInput({
     if (e.key === "Escape") {
       onOpenChange(false);
       setInputValue("");
+      setError(null);
     }
   };
 
@@ -169,6 +170,9 @@ export default function ScoreInput({
             <Input
               ref={inputRef}
               type="number"
+              inputMode="numeric"
+              step="1"
+              min="0"
               value={inputValue}
               onChange={(e) => {
                 setInputValue(e.target.value);
