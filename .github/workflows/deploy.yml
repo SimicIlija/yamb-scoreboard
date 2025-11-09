@@ -1,0 +1,65 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout yamb-scoreboard repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js application
+        run: npm run build
+
+      - name: Checkout SimicIlija.github.io repository
+        uses: actions/checkout@v4
+        with:
+          repository: SimicIlija/SimicIlija.github.io
+          path: github-pages-repo
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Pull latest changes from github.io repo
+        run: |
+          cd github-pages-repo
+          git pull origin main
+
+      - name: Clear and copy build output to jamb folder
+        run: |
+          rm -rf github-pages-repo/jamb
+          mkdir -p github-pages-repo/jamb
+          cp -r out/* github-pages-repo/jamb/
+
+      - name: Configure git
+        run: |
+          cd github-pages-repo
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+      - name: Commit and push changes
+        run: |
+          cd github-pages-repo
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Deploy yamb-scoreboard build
+
+            Auto-deployed from yamb-scoreboard repository
+            Commit: ${{ github.sha }}
+            "
+            git push origin main
+          fi
