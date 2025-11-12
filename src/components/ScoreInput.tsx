@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -110,17 +110,32 @@ export default function ScoreInput({
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
       setInputValue("");
       setError(null);
+
+      // Scroll the trigger element into view to ensure the popover above it is visible
+      // This is especially important on mobile Safari where the keyboard overlays the viewport
+      if (triggerRef.current) {
+        // Small delay to allow the popover to start rendering
+        setTimeout(() => {
+          triggerRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest'
+          });
+        }, 50);
+      }
+
       // Focus input when popover opens
       // setTimeout with 0ms is used to defer focus until after the popover is fully rendered
       // This ensures the input element is visible and accessible in the DOM
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 0);
+      }, 100);
     }
   }, [isOpen]);
 
@@ -153,10 +168,15 @@ export default function ScoreInput({
     }
   };
 
+  // Clone children to attach the ref
+  const triggerElement = typeof children === 'object' && children !== null && 'type' in children
+    ? React.cloneElement(children as React.ReactElement, { ref: triggerRef } as any)
+    : children;
+
   return (
     <Popover open={isOpen} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
-        {children}
+        {triggerElement}
       </PopoverTrigger>
       <PopoverContent className="w-64" side="top" align="center" sideOffset={10} avoidCollisions={true}>
         <form onSubmit={handleSubmit} className="space-y-3">
