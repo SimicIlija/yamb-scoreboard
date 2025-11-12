@@ -158,7 +158,7 @@ export default function ScoreInput({
       <PopoverTrigger asChild>
         {children}
       </PopoverTrigger>
-      <PopoverContent className="w-64">
+      <PopoverContent className="w-64" side="top" align="center" sideOffset={10} avoidCollisions={true}>
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Enter score for {rowLabel} ({columnLabel})</h4>
